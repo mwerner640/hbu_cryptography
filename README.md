@@ -3,6 +3,7 @@
 In this section of the workshop we are going to learn:
 - Cryptography Introduction
 - Stream Ciphers
+Coming soon:
 - Block Ciphers
 - Message Integrity
 - Collision Resistant Hashing
@@ -54,7 +55,7 @@ By this definition, we can prove the One Time Pad is secure. We won't--but we **
 ### Pseudorandom Generators
 As we noted initially, the One Time Pad is not a particularly useful cipher because its key is as long as its messages. An idea to reduce the length of key while minimising the loss of security is to utilize pseudorandom key generators instead of random key generation. The pseudorandom generator is a function, G, that maps from a seed space to the larger key space. For an example of how they would work, consider the One Time Pad. If we use a key, k, smaller than the length of the message, and our pseudorandom generator, G, our new encryption function is E(k,m) = m XOR G(k). Along the same lines our new decryption function is D(k,c) = c XOR G(k). This is not perfectly secret, but it is reasonably secure. To redefine security in a way more applicable to this situation, let's further refine G.
 
-We say G is predictable if there exists an efficent algorith A and a positive i less than or equal to n-1 such that the probabilty over a randomly chosen key K that we can predict that i+1th bit of G(k) given the first i bits of A(G(k)) is greater than half plus epsilon, for non-negligible epsilon. G is unpredictable if G is not predictable.
+We say G is predictable if there exists an efficent algorith A and a positive i less than or equal to n-1 such that the probabilty over a randomly chosen key K that we can predict that i+1th bit of G(k) given the first i bits of A(G(k)) is greater than half plus epsilon, for non-negligible epsilon. This is to say that if we have an algotithm A,  where knowing the result of the first i bits of the algorithm on the generated key, G(k), allows us to predict the i+1th bit of the generated key at greater than 50% accuracy, then G is predictable. if G is unpredictable if G is not predictable.
 
 #### Note: Non-negligible
 
