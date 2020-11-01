@@ -12,8 +12,6 @@ In this section of the workshop we are going to learn:
 - Diffie-Hellman
 - Cryptography with Python
 
-If you dislike math, we recommend skipping to *Cryptography with Python* after you finish the first two sections of *Cryptography Introduction*.
-
 ## Cryptography Introduction
 ### What is cryptography?
 Cryptography is a means of securing information to prevent **eavesdropping** and **tampering**. If you're only slightly familar with cryptography, you probably know it is a way of passing secret messages, but we also use cryptography to protect network traffic on the web, over wifi, and through bluetooth; to encrypt files on your disk drive; to access content locked into a specific platform (ie. songs you own on iTunes); and to verify your identity online.
@@ -23,7 +21,7 @@ As an example, encrypting communication over a network has two main steps: estab
 ### Simple Example Ciphers
 To start, we'll begin with some ciphers that were used seriously in the past but nowdays with advances in computing are easily broken. You should only use these ciphers recreationally. 
 
-First let's establish some notation. A *symmetric cipher* refers to an crypto system where both the encrypting party and the decrypting party use the same secret key. Our encryption and decryption algprithms are E(k,m) and D(k,c), where k is our key, m is our plaintext message, and c is our ciphertext. E(k,m)=c and D(k,c)=m. 
+First let's establish some notation. A *symmetric cipher* refers to an crypto system where both the encrypting party and the decrypting party use the same secret key. Our encryption and decryption algprithms are E(k,m) and D(k,c), where k is our key, m is our plaintext message, and c is our ciphertext. E(k,m)=c and D(k,c)=m. To formally define this we say a symmetric cipher is a cipher defined over (K, M, C) is a pair of efficient algorithms (E,D) where E: K x M -> C, D: K x C -> M, such that for every m in M and k in K, D(k, E(k,m)) = m. E is often a randomized function where D is always deterministic. 
 
 So, if Professor Les Lander wants to send a secret message to Professor Eileen Head to tell her the name of his favorite student in CS 140, m = "Bill Gates", he feeds m and the shared secret key into his encryption algorithm E(). This gives him the secret message "dfhyugilg6f", also known as a ciphertext. He then sends his least favorite student to Professor Head with this note, but they can't read it! Only Professor Head can, because she already has the secret key, k, and the decryption algorithm D(). Plugging the key and the ciphertext into D(), she reads the output and knows to watch out for Bill Gates. 
 
@@ -44,3 +42,33 @@ Let U be a finite set. Then a *probability distribution P over U* is a function 
 Events A and B are *independent* if the probability of A and B (and meaning intersection) is the same as the probability of A times the probability of B. Random variables X,Y are independent if for all a,b in V the probability that X=a and Y=b is the same as the probability X=a times the probability that Y=b.
 
 ## Stream Ciphers
+
+### One Time Pad
+The One Time Pad is the first secure cipher. It can encrypt messages that consist of 0s and 1s into ciphertext that consists of 0s and 1s using a randomized key of 0s and 1s the same length as the message. To calculate the ciphertext we XOR each bit of the message with the corrosponding bit of the key. To decrypt we do the same between the key and the ciphertext. This cipher encodes and decodes very fast, but because it has keys as long as the messages and each key can only be used once, the process of exchanging the keys securely is exactly as hard as exchanging the messages was in the first place. Ignoring that, is the One Time Pad secure?
+
+### Perfect Secrecy
+Let's define security under the assumption an attacker only has access to the ciphertext. A basic definition would focus on our main concerns: that the attacker cannot access our secret key or our plaintext message. The formal definition accepted by cryptographers is that of *perfect secrecy*. We consider a cipher as having perfect sercery if for every m_0, m_1 in M where m_0 is the same size as m_1 and every c in C, the probability E(k, m_0) = c equals the probability E(k, m_1) = c where k is randomly chosen from K. This means that given two messages and a ciphertext our attacker could not tell which of the messages produced that ciphertext.
+
+By this definition, we can prove the One Time Pad is secure. We won't--but we **could**. We will however note in closing, that to acheive this definition of perfect secrecy, a cipher must use a key equal in length or longer than our message. 
+
+### Pseudorandom Generators
+As we noted initially, the One Time Pad is not a particularly useful cipher because its key is as long as its messages. An idea to reduce the length of key while minimising the loss of security is to utilize pseudorandom key generators instead of random key generation. The pseudorandom generator is a function, G, that maps from a seed space to the larger key space. For an example of how they would work, consider the One Time Pad. If we use a key, k, smaller than the length of the message, and our pseudorandom generator, G, our new encryption function is E(k,m) = m XOR G(k). Along the same lines our new decryption function is D(k,c) = c XOR G(k). This is not perfectly secret, but it is reasonably secure. To redefine security in a way more applicable to this situation, let's further refine G.
+
+We say G is predictable if there exists an efficent algorith A and a positive i less than or equal to n-1 such that the probabilty over a randomly chosen key K that we can predict that i+1th bit of G(k) given the first i bits of A(G(k)) is greater than half plus epsilon, for non-negligible epsilon. G is unpredictable if G is not predictable.
+
+#### Note: Non-negligible
+
+### Attacks on Stream Ciphers
+
+### Example Stream Ciphers
+
+### Secure Pseudorandom Generators
+
+### Semantic Security
+
+# This workshop is based off material from Dan Boneh's free online cryptography course.
+
+
+
+
+
