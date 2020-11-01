@@ -3,6 +3,7 @@
 In this section of the workshop we are going to learn:
 - Cryptography Introduction
 - Stream Ciphers
+
 Coming soon:
 - Block Ciphers
 - Message Integrity
