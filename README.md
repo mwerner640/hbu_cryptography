@@ -4,15 +4,15 @@ In this section of the workshop we are going to learn:
 - Cryptography Introduction
 - Stream Ciphers
 - Block Ciphers
+- Trapdoor Permutation 
+- Diffie-Hellman 
 
 Coming Soon:
-- Message Integrity (WED)
-- Collision Resistant Hashing (THURS)
-- Authenticated Encryption (FRI)
-- Basic Key Exchange (FRI)
-- Trapdoor Permutation (SAT)
-- Diffie-Hellman (SAT)
-- Cryptography with Python (AJ)
+- Message Integrity 
+- Collision Resistant Hashing 
+- Authenticated Encryption 
+- Basic Key Exchange 
+- Cryptography with Python
 
 ## Cryptography Introduction
 ### What is cryptography?
@@ -126,12 +126,24 @@ AES is a Subs-Perm Network. Ten alternating Subs and Perm layers invoke the expa
 It is possible to build block ciphers from PRGs. We can expand PRGs into PRFs and the Luby-Rackoff Theorem expands these PRFs into PRPs. This is rarely used in practice as it is much slower than other methods. 
 
 ### Many Time Keys
+So far, in this workshop, we've emphasised how using the same key more than once greatly decreases the security of our cipher. While this in true, in practice keys are commonly reused, because the process of securely exchanging new keys is so costly. A variety of processes have been developed to lessen the damage of many time keys.
+
 #### Electronic Code Book
-#### Deterministic Counter Mode
+The most basic "strategy" for using a key multiple times, the Electronic Code Book makes no changes to the encryption process beyond saving results to reuse on duplicate messages. With ECB if we encrypt two identical messages we receive two identical ciphertexts. This doesn't seem like a huge problem, but in cases with large volumes of messages to incript, such as image encryption, clear patterns can emerge which give away a lot of data about the unencrypted image. In the same line, we would be able to easily modify the plaintext image, by adding a pattern to the ciphertext image. 
+
 #### Random Algorithm
+A strategy to combat this problem is to use randomised encryption and decryption algorithms. This is to say that if we have a message, m<sub>1</sub>, E would encrypt m<sub>1</sub> into c<sub>1</sub> or c<sub>2</sub>, etc, and D would decrypt both back into m<sub>1</sub>. While the theory behind this solution is elegant, it requires lengthening the ciphertext, which is unideal as we want to minimise the storage or transmission costs for our message as much as possible.
+
 #### Nonce Use
-#### CBC (Nonces/Padding)
-#### CTR (Random/Nonces)
+We've already introduced the concept of nonces. By consistently varying our nonce we can avoid varying our key while dodging the identical results issue that arises with ECB. To avoid re-exchanging our nonce each transmission as we would a key, we can have our nonce be a counter or variation on a counter. Nonce based encryption is semantically secure under chosen plaintext attack. 
+
+A *chosen plaintext attack* is when an attacker can encrypt as many messages of their choice as they want and then view their ciphertext. This is a reasonable privlege for us to grant our attacker as we can see this occur in real life situations such as with access to a password protected encrypted disk. Our attacker cannot decrypt data without the password, but they can encrypt new messages of their chosing.  
+
+#### CBC
+In Cipher Block Chaining, each plaintext block is xored with the last block before being encrypted. To ensure uniqueness, a well chosen initial message, referred to as IV, is xor-ed with the first block. The ciphertext must then be padded to a multiple of ciphertext block. If no pad is needed we add a dummy block. Our IV must be unpredicatable. For added security we can implement a nonce with CBC, used with the first of the expanded keys.
+
+#### CTR
+CBC can be further refined by xor-ing a counter to IV or concatinating a nonce to IV. That including an easily predictable elment such as a counter will enhance security has had many skeptics, but in this case, no significant attacks have been found that cannot be blamed on poor choice of IV or the underlying functions, so the practice is widely accepted.
 
 # This workshop is based off material from Dan Boneh's free online cryptography course.
 
