@@ -6,13 +6,13 @@ In this section of the workshop we are going to learn:
 - Block Ciphers
 
 Coming Soon:
-- Message Integrity
-- Collision Resistant Hashing
-- Authenticated Encryption
-- Basic Key Exchange 
-- Trapdoor Permutation
-- Diffie-Hellman
-- Cryptography with Python
+- Message Integrity (WED)
+- Collision Resistant Hashing (THURS)
+- Authenticated Encryption (FRI)
+- Basic Key Exchange (FRI)
+- Trapdoor Permutation (SAT)
+- Diffie-Hellman (SAT)
+- Cryptography with Python (AJ)
 
 ## Cryptography Introduction
 ### What is cryptography?
@@ -90,11 +90,48 @@ When considering *semantic security* we define the advantage A,E on A, a statica
 
 ## Block Ciphers
 ### What are Block Ciphers?
+Block ciphers are symmetric ciphers that operate on fixed size groups of bits, refered to as blocks. As an example 3DES can only take message text of 64 bits and requires a 168 bit key. This is in contrast to stream ciphers such as the one time pad, which can take messages of any size and requires no specific key length. This specificity is because block ciphers are bit on iteration. The key is expanded into multiple keys and then a round function, R(k<sub>i</sub>,m), is performed on each key and the message. 
+
+In general, block ciphers in use today are faster than stream ciphers in use today.
+
+Let's consider block ciphers more rigorously. We can consider block ciphers *Pseudorandom Functions*/*Pseudorandom Permuatations*. A PRF, f, defined over (K,X,Y) is a function that maps from KxX to Y such that there exists an efficient algorithm to evaluate f(k,x). A PRP, E, defined over (K,X) is a function that maps from KxX to X such that there exists an efficient deterministic algorithm to evaluate E(k,x), the function E(k, x) is one-to-one, and there exists an efficient inversion algorithm D(k,y). This is to say that E cannot be distinguished from a random permutation. Note that all PRPs are PRFs, but to be a PRP a PRF must also have X=Y and be invertible. 
+
+Informally we can consider PRFs secure if f(k,x) is indistinguishable from a random function from X to Y and PRPs secure if E(k,x) is indistinguishable from a random one-to-one function from X to Y. 
+
 ### DES
+DES, the Data Encryption Standard was established as the standard in 1976 and broken in 1997. It was widely deployed in the financial industry. The cipher is based on the idea of a Feistel Network. Given d funcions that maps {0,1} to the n onto itself, we want to build an invertible function from {0,1} to the 2n onto itself. We can define the network recursively where R<sub>i</sub> = f<sub>i</sub>(R<sub>i-1</sub>) xor L<sub>i-1</sub> and L<sub>i</sub> = R<sub>i-1</sub> where R<sub>0</sub> and L<sub>0</sub> are our input and R<sub>d</sub> and L<sub>d</sub> are our output. This is an invertible function and so our decryption version is this process in reverse order. If our functions are secure PRFs and we use independent keys, feistel networks of specific lengths have been proven secure PRPs. DES consists of a 16 round feistel network and a key expansion, taking our k out to 16 keys. The functions inside the feistel network are refered to as S-boxes, and then the final function on the network's results is the P-box. These functions need to be chosen carefully to avoid linearity. Chosing the functions at random would lead to an insecure cipher.    
+
 ### Attacks
+As we noted earlier, DES is broken. The most significant method for breaking DES is the exhaustive search attack.
+
+#### Exhaustive Search Attack
+The exhaustive key search is a brute force attack to find the key given two message ciphertext pairs. The process is time consuming (potentially months of searching) or expensive (tens of thousands of dollars of computing power), but it has been repeatedly demonstrated as possible. The 56 bit key is too small. We can strengthen DES to prevent thus attack with 3DES, which triples the entire process. While no longer vulnerable to exhausive search, 3DES is slow, even for a block cipher. Why not 2DES? Doubling DES leaves the process vulnerable to a meet in the middle attack which would reduce the search time down to that of DES. DESX was also proposed to replace DES, but it too has been broken.
+
+#### Side Channel Attacks
+Rather than attacking the ciphertext or plaintext ciphertext pairs, attackers have been known to break block ciphers by observing the timing of encryption and decryption or the power consumption of the algorithms involved. Blocking this type of attack is fairly difficult and typically involves generating noise on the system and establishing protocols to maintain consistent computing times. 
+
+#### Fault Attacks
+A single error in the implementation of the last round of a block cipher is known to expose the secret key. 
+
+#### Linear Attacks
+As we noted when discussing DES, the presense of linearity in the rounding functions of the block cipher can make the entire thing linear. To show you intuitively what that means for security, an example of a linear cipher is a caesar cipher. Ciphers protect the message by making the relationship between the plaintext and ciphertext appear random. Preventing a linear relationship is crucial, but still extremely difficult, hence why attackers will still search for linear relationships and occassionally find them.
+
+#### Quantum Attacks
+Just as DES is has too small a keyspace to not be susceptible to brute force attacks, all block cipher attacks are susceptible to brute force when quantum computing is brought into play. Fortunately quantum computers are rare and expremely expensive to run, so only highly valuable decryptions would be worth months of computing time on a quantum computer.
+
 ### AES
+AES is a Subs-Perm Network. Ten alternating Subs and Perm layers invoke the expanded keys to take our input to our output. The process involves byte substitution, row shifting, and column mixing. AES is currently implemented in browsers through Javascript and in Intel hardware. No reasonable attack is known to exist on AES (excluding quantum).
+
 ### Block Ciphers From PRGs
+It is possible to build block ciphers from PRGs. We can expand PRGs into PRFs and the Luby-Rackoff Theorem expands these PRFs into PRPs. This is rarely used in practice as it is much slower than other methods. 
+
 ### Many Time Keys
+#### Electronic Code Book
+#### Deterministic Counter Mode
+#### Random Algorithm
+#### Nonce Use
+#### CBC (Nonces/Padding)
+#### CTR (Random/Nonces)
 
 # This workshop is based off material from Dan Boneh's free online cryptography course.
 
