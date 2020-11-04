@@ -3,9 +3,9 @@
 In this section of the workshop we are going to learn:
 - Cryptography Introduction
 - Stream Ciphers
-
-Coming soon:
 - Block Ciphers
+
+Coming Soon:
 - Message Integrity
 - Collision Resistant Hashing
 - Authenticated Encryption
@@ -59,14 +59,42 @@ As we noted initially, the One Time Pad is not a particularly useful cipher beca
 We say G is predictable if there exists an efficent algorith A and a positive i less than or equal to n-1 such that the probabilty over a randomly chosen key K that we can predict that i+1th bit of G(k) given the first i bits of A(G(k)) is greater than half plus epsilon, for non-negligible epsilon. This is to say that if we have an algotithm A,  where knowing the result of the first i bits of the algorithm on the generated key, G(k), allows us to predict the i+1th bit of the generated key at greater than 50% accuracy, then G is predictable. if G is unpredictable if G is not predictable.
 
 #### Note: Non-negligible
+Epsilon is a function that maps the positive integers to the positive real numbers. Epsilon is non-negligible if there exists a d such that epsilon of lambda is greater than or equal to one over lambda to the power of d infinitely often. In practice this is roughly equivalent to epsilon being greater than one divided by two to the power of thirty.
 
 ### Attacks on Stream Ciphers
+#### Key Reuse
+We noted before without explaining, that keys for the one time pad can only be used once. To prove this, lets assume we intercepted two ciphertext messages made with the same key. How can we access the plaintext? The attack for this scenario is to xor the two ciphertexts. If we're working with the same key then we'll end up with our two messages xor-ed as the key will cancel out. While this will not reveal the seperate plaintexts it will produce a value, that due to the redundancies in english and ascii, we can obtain a result from, just like the sample ciphers in the last section. 
+
+This may seem like an easy mistake to avoid, but stream ciphers have been used with repeated keys in ways that allowed exploits like this to exist in disk encryption and encrypting network traffic. To avoid this, it is now recommended to never use stream ciphers for disk encryption and it has become standard for networks to renegotiate keys each session. 
+
+#### Manipulation
+Stream ciphers often lack integrity, which is to say that an intercepted ciphertext can be modified in a way that is undetectable and leads to predictable changes to the plaintext. For example with the one time pad, xoring the ciphertext with a malicious edit, x, will lead the decode function to produce a "plaintext" that is really the plaintext xored with x.
 
 ### Example Stream Ciphers
+#### RC4
+RC4 was a stream cipher introduced in 1987. It was used in HTTPS and WEP. Unfortuantely there is a bias in the initial output that has been discovered which allows for related key attacks. Thus, RC4 is no longer in use today.
+
+#### CSS
+The CSS was a piece of hardware known as the Content Scramble System. The seed for CSS was only five bits, that was then fed through linear feedback shift registers and modular addition. A systematic and extremely quick attack exists to identify the key from ciphertext for CSS. At that point the message can be decrypted traditionally. 
+
+#### eStream
+eStream is a modern stream cipher that uses both a seed and a nonce. The nonce is non-repeating for any given key. The equation is then E(k, m; r) = m xor PRG(k;r). The PRG most commonly used is Salsa20, which has no known attack better than brute force. Despite this, we cannot prove that Salsa20--or any PRG is secure.
 
 ### Secure Pseudorandom Generators
+We say a PRG is secure if for any efficient statistical test, A, the advantage of A, G is negligible. We define *statistical test* on the space {0,1} to the n as an algorithm, A, such that A(x) outputs 0 for not random or 1 for random. We define *advantage* A,G on A, a statistical test, and G, a PRG, as the absolute value of the probability that A(G(k))=1 for a random k from the seed space, minus the probability A(r)=1, with r being a random key from the full keyspace. There is currently no PRG that has been proven secure, although serious contenders are suspected to be secure and have not been proven insecure. We can note that its proven that a secure PRG if any are to be found, will be unpredictable. In the opposite direction, any unpredictable PRG will be secure. 
+
+For future reference we should note that two distributions over {0,1} to the n are *computationally indistinguishable* if there exists an efficient statistical test, A, such that the difference between the probabilities that the statistical tests on elements of each distribution is one is less than negilible. 
 
 ### Semantic Security
+When considering *semantic security* we define the advantage A,E on A, a statical test, and E, an encryption algorithm, as the difference between the probabilities of W<sub>a</sub> and W<sub>b</sub>. W<sub>a</sub> is the event that an experiement, a, equals 1. E is *semantically secure* if for all efficient A the semantic security advantage A,E is negilible. This means for all explict m<sub>0</sub>, m<sub>1</sub> E(k, m<sub>0</sub>) is compuationally indestinguishable from E(k, m<sub>1</sub>).
+
+## Block Ciphers
+### What are Block Ciphers?
+### DES
+### Attacks
+### AES
+### Block Ciphers From PRGs
+### Many Time Keys
 
 # This workshop is based off material from Dan Boneh's free online cryptography course.
 
