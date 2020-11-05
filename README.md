@@ -145,6 +145,17 @@ In Cipher Block Chaining, each plaintext block is xored with the last block befo
 #### CTR
 CBC can be further refined by xor-ing a counter to IV or concatinating a nonce to IV. That including an easily predictable elment such as a counter will enhance security has had many skeptics, but in this case, no significant attacks have been found that cannot be blamed on poor choice of IV or the underlying functions, so the practice is widely accepted.
 
+## Trapdoor Permutation
+### Public Key Encryption
+### Trapdoor Construction
+### RSA
+### PKCS
+
+## Diffie-Hellman
+### ElGamal Public-key System
+### ELGamal Security
+### Improving ElGamal Security
+
 # This workshop is based off material from Dan Boneh's free online cryptography course.
 
 
