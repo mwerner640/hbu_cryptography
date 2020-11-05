@@ -139,7 +139,7 @@ A strategy to combat this problem is to use randomised encryption and decryption
 #### Nonce Use
 We've already introduced the concept of nonces. By consistently varying our nonce we can avoid varying our key while dodging the identical results issue that arises with ECB. To avoid re-exchanging our nonce each transmission as we would a key, we can have our nonce be a counter or variation on a counter. Nonce based encryption is semantically secure under chosen plaintext attack. 
 
-A *chosen plaintext attack* is when an attacker can encrypt as many messages of their choice as they want and then view their ciphertext. This is a reasonable privlege for us to grant our attacker as we can see this occur in real life situations such as with access to a password protected encrypted disk. Our attacker cannot decrypt data without the password, but they can encrypt new messages of their chosing.  
+A *chosen plaintext attack* is when an attacker can encrypt as many messages of their choice as they want and then view their ciphertext. This is a reasonable privlege for us to grant our attacker if we are going to reuse our key, and we could see this occur in real life situations such as with access to a password protected encrypted disk. Our attacker cannot decrypt data without the password, but they can encrypt new messages of their chosing.  
 
 #### CBC
 In Cipher Block Chaining, each plaintext block is xored with the last block before being encrypted. To ensure uniqueness, a well chosen initial message, referred to as IV, is xor-ed with the first block. The ciphertext must then be padded to a multiple of ciphertext block. If no pad is needed we add a dummy block. Our IV must be unpredicatable. For added security we can implement a nonce with CBC, used with the first of the expanded keys.
@@ -149,8 +149,20 @@ CBC can be further refined by xor-ing a counter to IV or concatinating a nonce t
 
 ## Trapdoor Permutation
 ### Public Key Encryption
+We've seen from our experience with private key cryptography that securely exchanging a private key to begin communicating is as much a process as sending messages itself. For that reason, cryptographers pursued creating encryption algorithms that don't require a secret key. The premise behind these algorithms is a complete diversion from that of private key encryption: where private key encryption algorithms focus on maintaining invertability for decryption, public key encryption algorithms are typically easily computable one way, but extremely expensive to compute in the other direction. 
+
+To begin the process, our first user generates our keys, PK and SK, and gives PK to the second user. Our second user then selects a random x and sends it encrypted with PK to the first user. A public key encryption system is a set of three algorithms, (G(), E(PK, m), D(SK, m)), where G() is a randomization algorithm that outputs a key pair (PK, SK), E(PK, m) is a randomized algorithm that outputs the ciphertext, c, and D(SK, c) is a deterministic algorithm that takes the cipher and output the plaintext. 
+
+Our previous definition of semantic security holds for this situation, however, unlike last time we need not differentiate between one time security and many time security, as our attacker can encrypt as many messages as they want themselves. This is why our encryption function must be randomised. Additionallu, unlike we noted in authenticated encryption, where we have an implied protection against chosen ciphertext attacks because the attacker cannot create new ciphertexts with public key encryption the attacker can create new ciphertexts so we need to directly require chosen ciphertext security to prevent tampering.
+
 ### Trapdoor Construction
+A *trapdoor function* that maps X to Y is a set of three efficient algorithms, (G, F, F-inverse), where G() is a randomization algorithm that outputs a key pair (PK, SK), F(PK, x) is a deterministic algorithm that maps X to Y, and F-inverse(SK, y) is a deterministic algorithm that inverts F(PK, x). This system is secure if F is *one-way* which is to say F(PK, x) cannot be inverted without SK. More formally, the system is secure if for all efficient A, the advantage A,F which is the probability x=y, is less than negligible.  
+
+To construct a public key encryption from a trapdoor function we need a secure TDF--(G, F, F-inverse) where F maps X to Y, (E<sub>s</sub>,D<sub>s</sub>)--a symmetric authenticated encryption over (K, M, c), and a hash function that maps X to K. Then for E(PK, m) we chose a random x from X, compute F(PK, x) which outputs y, compute H(x) to output k, run E<sub>s</sub>(k, m) to produce c, and then return y and c concatenated. To decrypt we have D(SK, (y,c)) we run F-inverse(SK, y) to get x, H(x) to output k, and D<sub>s</sub>(k,c) for m. We then output m. If our TDF is secure, our encryption algorithm is authenticated, and our hash is a random oracle, (G,E,D) is chosen ciphertext secure. 
+
 ### RSA
+To introduce RSA we need to first establish some variables and notation. Let N=pq, where p, q are prime. Let Z<sub>N</sub> be the set of all non-negative integers less than N. Then (Z<sub>N</sub>)* is the set of all invertible elements of Z<sub>n</sub>. [A reminder, an element,x, is invertible in N if gcd(x, N)=1.] The number of elements in (Z<sub>N</sub>)* , phi,is N-p-q+1. For all x in (Z<sub>N</sub>)* , x to the phi-th power equals 1.
+
 ### PKCS
 
 ## Diffie-Hellman
