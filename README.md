@@ -160,10 +160,17 @@ A *trapdoor function* that maps X to Y is a set of three efficient algorithms, (
 
 To construct a public key encryption from a trapdoor function we need a secure TDF--(G, F, F-inverse) where F maps X to Y, (E<sub>s</sub>,D<sub>s</sub>)--a symmetric authenticated encryption over (K, M, c), and a hash function that maps X to K. Then for E(PK, m) we chose a random x from X, compute F(PK, x) which outputs y, compute H(x) to output k, run E<sub>s</sub>(k, m) to produce c, and then return y and c concatenated. To decrypt we have D(SK, (y,c)) we run F-inverse(SK, y) to get x, H(x) to output k, and D<sub>s</sub>(k,c) for m. We then output m. If our TDF is secure, our encryption algorithm is authenticated, and our hash is a random oracle, (G,E,D) is chosen ciphertext secure. 
 
-### RSA
+### Trapdoor RSA
 To introduce RSA we need to first establish some variables and notation. Let N=pq, where p, q are prime. Let Z<sub>N</sub> be the set of all non-negative integers less than N. Then (Z<sub>N</sub>)* is the set of all invertible elements of Z<sub>n</sub>. [A reminder, an element,x, is invertible in N if gcd(x, N)=1.] The number of elements in (Z<sub>N</sub>)* , phi,is N-p-q+1. For all x in (Z<sub>N</sub>)* , x to the phi-th power equals 1.
 
-### PKCS
+So consider a standard trapdoor permutation with these specifications. We use G() to choose random primes p,q, and e,d such that e * d = 1mod(phi). G outputs PK = (N, e) and SK = (N, d). RSA(x) is x to the eth power in Z<sub>N</sub> (our e, not the constant). Then F-inverse(SK, y) = y to the dth power, and y to the dth power = RSA(x) to the dth power = x to the (e * d)th power = x to the (k * phi)+1th power = x to the phith power to the kth power multiplied by x.  
+
+RSA is built on the assumption that this is a one way permutation, because it should be much easier to find the product of two very large primes than it is to find which two very large primes are the sole factors of an extremely large number. It must be noted, however, that the trapdoor function requires all three algorithms for security. Versions of RSA without the hash and authenticated encryption algorithm are insecure.
+
+### Attacks on RSA
+#### PKCS1 - Bleichenbacher's attack
+#### OAEP - Timing Attacks
+#### Wiener's attack
 
 ## Diffie-Hellman
 ### ElGamal Public-key System
