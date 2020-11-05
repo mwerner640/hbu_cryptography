@@ -5,6 +5,7 @@ This section of the workshop:
 - Private Key Cryptography:
   - Stream Ciphers
   - Block Ciphers
+- Authenticated Encryption 
 - Public Key Cryptography:
   - Trapdoor Permutation 
   - Diffie-Hellman 
@@ -12,7 +13,6 @@ This section of the workshop:
 Coming Soon:
 - Message Integrity 
 - Collision Resistant Hashing 
-- Authenticated Encryption 
 - Basic Key Exchange 
 - Cryptography with Python
 
@@ -147,6 +147,14 @@ In Cipher Block Chaining, each plaintext block is xored with the last block befo
 #### CTR
 CBC can be further refined by xor-ing a counter to IV or concatinating a nonce to IV. That including an easily predictable elment such as a counter will enhance security has had many skeptics, but in this case, no significant attacks have been found that cannot be blamed on poor choice of IV or the underlying functions, so the practice is widely accepted.
 
+## Authenticated Encryption
+### Motivation
+### Construction
+### Attacks
+
+## Hash Functions
+### ideally I find a way to hand wave this out of existence
+
 ## Trapdoor Permutation
 ### Public Key Encryption
 We've seen from our experience with private key cryptography that securely exchanging a private key to begin communicating is as much a process as sending messages itself. For that reason, cryptographers pursued creating encryption algorithms that don't require a secret key. The premise behind these algorithms is a complete diversion from that of private key encryption: where private key encryption algorithms focus on maintaining invertability for decryption, public key encryption algorithms are typically easily computable one way, but extremely expensive to compute in the other direction. 
@@ -173,7 +181,7 @@ RSA is built on the assumption that this is a one way permutation, because it sh
 #### Wiener's attack
 
 ## Diffie-Hellman
-### ElGamal Public-key System
+### ElGamal Public-Key System
 ### ELGamal Security
 ### Improving ElGamal Security
 
