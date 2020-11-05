@@ -1,11 +1,13 @@
 # hbu_cryptography
 
-In this section of the workshop we are going to learn:
-- Cryptography Introduction
-- Stream Ciphers
-- Block Ciphers
-- Trapdoor Permutation 
-- Diffie-Hellman 
+This section of the workshop:
+- Introduction
+- Private Key Cryptography:
+  - Stream Ciphers
+  - Block Ciphers
+- Public Key Cryptography:
+  - Trapdoor Permutation 
+  - Diffie-Hellman 
 
 Coming Soon:
 - Message Integrity 
