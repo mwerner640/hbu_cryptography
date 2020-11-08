@@ -143,11 +143,12 @@ CBC can be further refined by xor-ing a counter to IV or concatinating a nonce t
 
 ## Authenticated Encryption
 ### Motivation
+We've introduced the idea of a chosen plaintext attack. While we can build cryptosystems relatively secure to it, they address eavesdropping rather than tampering. In a chosen plaintext scenario, an attacker with the additional ability to manipulate communication could simply replace aspects of the ciphertext with one they encrypted themselves. To address this, Message Authentication Codes (MACS), have been developed to verify that messages are unaltered upon arrival, but on their own they provide not security from eavesdropping. To provide both tampering and eavesdropping protection we turn to authenticated encryption.
 ### Construction
 ### Attacks
 
 ## Hash Functions
-A *hash function* is a function that can be used to map data of arbitrary size to fixed size values. They are used in cryptographic schemes such as trapdoor permutations, as well as on their own such as SHA-256. Hash functions are not considered particularly secure and our concepts of security for them like "the random oracle" are extremely limited, however hash functions remain in use despite this, because they are fast to use and many are unbroken.
+A *hash function* is a function that can be used to map data of arbitrary size to fixed size values. They are used in cryptographic schemes such as trapdoor permutations, as well as on their own such as SHA-256. Hash functions are not considered particularly secure and our concepts of security for them like "the random oracle" are extremely limited, however hash functions remain in use, because they are fast to use and many are unbroken.
 
 ## Trapdoor Permutation
 ### Public Key Encryption
