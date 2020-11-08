@@ -10,12 +10,6 @@ This section of the workshop:
   - Trapdoor Permutation 
   - Diffie-Hellman 
 
-Coming Soon:
-- Message Integrity 
-- Collision Resistant Hashing 
-- Basic Key Exchange 
-- Cryptography with Python
-
 ## Cryptography Introduction
 ### What is cryptography?
 Cryptography is a means of securing information to prevent **eavesdropping** and **tampering**. If you're only slightly familar with cryptography, you probably know it is a way of passing secret messages, but we also use cryptography to protect network traffic on the web, over wifi, and through bluetooth; to encrypt files on your disk drive; to access content locked into a specific platform (ie. songs you own on iTunes); and to verify your identity online.
@@ -153,7 +147,7 @@ CBC can be further refined by xor-ing a counter to IV or concatinating a nonce t
 ### Attacks
 
 ## Hash Functions
-### ideally I find a way to hand wave this out of existence
+A *hash function* is a function that can be used to map data of arbitrary size to fixed size values. They are used in cryptographic schemes such as trapdoor permutations, as well as on their own such as SHA-256. Hash functions are not considered particularly secure and our concepts of security for them like "the random oracle" are extremely limited, however hash functions remain in use despite this, because they are fast to use and many are unbroken.
 
 ## Trapdoor Permutation
 ### Public Key Encryption
@@ -186,8 +180,3 @@ RSA is built on the assumption that this is a one way permutation, because it sh
 ### Improving ElGamal Security
 
 # This workshop is based off material from Dan Boneh's free online cryptography course.
-
-
-
-
-
