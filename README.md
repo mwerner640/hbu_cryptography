@@ -189,8 +189,6 @@ Wiener's attack works on implementations that use a small key, d, to speed up th
 The ElGamal system relies on properties of finite cyclic groups. We start with G, a finite cyclic group of order n, and a hash function, H, that maps G-squared to K. Using this along with a symmetric authenticated encryption defined over (K,M,C), (E<sub>s</sub>,D<sub>s</sub>). We chose a random generator, g, in G, and a random a in Z<sub>n</sub>. To encrypt, given g, g to the a, and m, we select b at random from Z<sub>n</sub>. Then u is g to the power of b, and v is g to the power of a to the power of b. H(u,v) maps to k, and E<sub>s</sub>(k,m) maps to c. We output u and c. To decrypt, given a, u, and c, we set v to u to the power of a. Then H(u,v) maps to k, D<sub>s</sub>(k,c) maps to m, and we output m. 
 
 ### ELGamal Security
-This hash variant of Diffie Hellman is semantically secure, but is not chosen ciphertext secure. 
-
-### Improving ElGamal Security
+This hash variant of Diffie Hellman is semantically secure, but is not chosen ciphertext secure. To resolve this vulnerability, the process of twin ElGamal has been developed.
 
 # This workshop is based off material from Dan Boneh's free online cryptography course.
