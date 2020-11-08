@@ -176,8 +176,13 @@ RSA is built on the assumption that this is a one way permutation, because it sh
 
 ### Attacks on RSA
 #### PKCS1 - Bleichenbacher's attack
+Daniel Bleichenbacher of Bell Labs is known for multiple attacks against RSA encryption and RSA signatures when implemented as SSL certificates. These attacks hold against the standard PKCS implementation of RSA. The attack compromises confidentiality, but is not easily used for tampering.
+
 #### OAEP - Timing Attacks
+Some history, the new function added to PKCS2, OAEP, was implemented with returns at different parts of the error process. This leaked why decrypting certain ciphertexts led to the fail state, a vulnerability that removed the security that fail state added.
+
 #### Wiener's attack
+Wiener's attack works on implementations that use a small key, d, to speed up the computation time of RSA. Algebraic evidence suggests that RSA decryption will never be securely sped up.
 
 ## Diffie-Hellman
 ### ElGamal Public-Key System
